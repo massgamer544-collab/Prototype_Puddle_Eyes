@@ -32,6 +32,17 @@ class DashboardScreen extends StatelessWidget {
           TrajectoryOverlay(), // Overlay dynamique
         ],
       ),
+      ElevatedButton(
+        child: const Text("3D Sonar"),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MateriaPageRoute(
+              builder: (_) => const Sonar3DView(),
+            ),
+          );
+        },
+      ),
     );
   }
 }

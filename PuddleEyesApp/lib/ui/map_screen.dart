@@ -38,6 +38,19 @@ class MapScreen extends StatelessWidget {
           );
         },
       ),
+      floatingActionButton: FloatingActionButton(
+        heroTag: "importKML",
+        child: Icon(Icons.file_upload),
+        onPressed: () async {
+            final points = await KMLImportService.importKML();
+            for (var p in points) {
+                obstacles.add(
+                    LatLng(p["lat"]!, p["lon"]!)
+                );
+            }
+            setState(() {});
+        },
+      ),
     );
   }
 }
