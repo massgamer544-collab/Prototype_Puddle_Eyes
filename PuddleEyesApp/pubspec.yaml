@@ -7,10 +7,12 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  geolocator: ^10.0.0   # GPS
-  hive: ^2.2.3          # Stockage Locale
+  gpx: ^1.0.4            # pour créer/ exporter des fichier GPX
+  path_provider: ^2.1.11 # pour récupèrer Le dossier de stockage
+  geolocator: ^10.0.0    # GPS
+  hive: ^2.2.3           # Stockage Locale
   hive_flutter: ^1.1.0
-  flutter_map: ^4.2.0   # carte OpenStreetMap
+  flutter_map: ^4.2.0    # carte OpenStreetMap
   flutter_cube: ^0.0.8
   flutter_blue: ^0.8.0
   provider: ^6.0.0

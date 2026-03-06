@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import '../services/tracking_service.dart';
+import '../services/export_service.dart';
+
 
 class MapScreen extends StatelessWidget {
   @override
@@ -26,6 +28,15 @@ class MapScreen extends StatelessWidget {
             )).toList(),
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.upload_file),
+        onPressed: () async {
+          String path = await ExportService.exportGPX();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Track exporté : $path')),
+          );
+        },
       ),
     );
   }
