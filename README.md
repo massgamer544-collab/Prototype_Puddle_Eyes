@@ -20,3 +20,16 @@
  - Mobile display
 
  
+# Flux du produit 
+Scan du terrain 
+↓
+Analyse profondeur
+↓
+Classification risque
+↓
+Affichage téléphone
+
+# Résultat dans l'app mobile :
+SAFE      🟢  < 20 cm
+CAUTION   🟡  20-40 cm
+DANGER    🔴  > 40 cm
