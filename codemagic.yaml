@@ -1,0 +1,25 @@
+workflows:
+  ios-release:
+    name: iOS Signed Build
+
+    environment:
+      flutter: stable
+      xcode: latest
+
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: com.puddle.eyes
+
+    scripts:
+      - name: Install dependencies
+        script: |
+          cd PuddleEyesApp
+          flutter pub get
+
+      - name: Build IPA
+        script: |
+          cd PuddleEyesApp
+          flutter build ipa --release
+
+    artifacts:
+      - PuddleEyesApp/build/ios/ipa/*.ipa
