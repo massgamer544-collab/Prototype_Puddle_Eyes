@@ -1,58 +1,56 @@
 import 'package:flutter/material.dart';
-import '../services/bluetooth_service.dart';
-import 'package:provider/provider.dart';
+import 'package:puddle_eyes_app/services/parser_service.dart';
 
 class TrajectoryOverlay extends StatelessWidget {
-    @override
-    Widget build(BuildContext context) {
-        var btService = Provider.of<BluetoothService>(context);
+  final List<Point3D> points;
 
-        // Exemple simple : détecter le point le plus profond devant le véhicule
-        double minDepthFront = 0.0;
-        if (btService.points.isNotEmpty) {
-            var frontpoints = btService.points.where((p) => (p.y > 0 && p.y > 5)).toList();
-            if (frontpoints.isNotEmpty) {
-                minDepthFront = frontpoints.map((p) => p.z).reduce((a,b) => a<b?a:b);
-            }
-        }
+  const TrajectoryOverlay({
+    super.key,
+    required this.points,
+  });
 
-        // Déterminer couleur recommandation
-        Color trajectoryColor = Colors.green;
-        if(minDepthFront > 0.2 && minDepthFront <= 0.4) {
-            trajectoryColor = Color.yellow;
-        } else if (minDepthFront > 0.4) {
-            trajectoryColor = Colors.red;
-        }
-
-        return Positioned.fill(
-            child: IgnorePointer(
-                child: CustomPainter(
-                    painter: TrajectoryPainter(trajectoryColor),
-                ),
-            ),
-        );
-    }
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      painter: _TrajectoryPainter(points),
+      size: Size.infinite,
+    );
+  }
 }
 
-class TrajectoryPainter extends CustomPainter {
-    final Color color;
-    TrajectoryPainter(this.color);
+class _TrajectoryPainter extends CustomPainter {
+  final List<Point3D> points;
 
-    @override
-    void paint(Canvas canvas, Size size) {
-        final paint = Paint()
-            ..color = color
-            ..strokeWidth = 4
-            ..style = PaintingStyle.stroke;
-        
-        // Exemple : ligne centrale recommandée
-        final path = Path();
-        path.moveTo(size.width/2, size.height);
-        path.lineto(size.width/2, 0);
+  _TrajectoryPainter(this.points);
 
-        canvas.drawPath(path, paint)`;`
+  @override
+  void paint(Canvas canvas, Size size) {
+    if (points.isEmpty) return;
+
+    final paint = Paint()
+      ..color = Colors.white24
+      ..strokeWidth = 2
+      ..style = PaintingStyle.stroke;
+
+    final path = Path();
+
+    for (int i = 0; i < points.length; i++) {
+      final p = points[i];
+      final x = ((p.x + 1.0) / 2.0) * size.width;
+      final y = size.height * 0.75;
+
+      if (i == 0) {
+        path.moveTo(x, y);
+      } else {
+        path.lineTo(x, y);
+      }
     }
 
-    @override
-    bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant _TrajectoryPainter oldDelegate) {
+    return oldDelegate.points != points;
+  }
 }

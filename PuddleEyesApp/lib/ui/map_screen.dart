@@ -1,55 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong2/latlong.dart';
-import '../services/tracking_service.dart';
-import '../services/export_service.dart';
-
 
 class MapScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var obstacles = TrackingService.getAllObstacles();
-
     return Scaffold(
       appBar: AppBar(title: Text('Offroad Map')),
-      body: FlutterMap(
-        options: MapOptions(center: LatLng(45.0, -73.0), zoom: 13),
-        layers: [
-          TileLayerOptions(
-            urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-            subdomains: ['a', 'b', 'c'],
-          ),
-          MarkerLayerOptions(
-            markers: obstacles.map((obs) => Marker(
-              width: 40,
-              height: 40,
-              point: LatLng(obs.lat, obs.lon),
-              builder: (ctx) => Icon(Icons.warning, color: Colors.red),
-            )).toList(),
-          ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.upload_file),
-        onPressed: () async {
-          String path = await ExportService.exportGPX();
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Track exporté : $path')),
-          );
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        heroTag: "importKML",
-        child: Icon(Icons.file_upload),
-        onPressed: () async {
-            final points = await KMLImportService.importKML();
-            for (var p in points) {
-                obstacles.add(
-                    LatLng(p["lat"]!, p["lon"]!)
-                );
-            }
-            setState(() {});
-        },
+      body: Center(
+        child: Text('Carte indisponible pour l’instant.'),
       ),
     );
   }
