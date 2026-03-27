@@ -13,7 +13,7 @@ class TrackingService {
   static Future<void> recordObstacle(double depth) async {
     if (depth < 0.2) return; // seuil minimal pour considérer trou
 
-    Position pos = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    Position pos = await Geolocator.getCurrentPosition(locationSettings: LocationSettings(accuracy: LocationAccuracy.high));
     Obstacle obs = Obstacle(lat: pos.latitude, lon: pos.longitude, depth: depth, timestamp: DateTime.now());
     await obstacleBox.add(obs);
   }
